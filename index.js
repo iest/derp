@@ -1,7 +1,8 @@
 /*
   TODO:
   - Add posts dir option to config
-  - Add allowed extensions for posts
+  - Add allowed filename extensions for posts
+  - Add template extension option to config
  */
 
 var _ = require('lodash');
