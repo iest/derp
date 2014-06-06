@@ -1,20 +1,25 @@
 /*
   TODO:
-  - Add posts dir option to config
-  - Add allowed filename extensions for posts
-  - Add template extension option to config
+  - Watcher for posts dir, add/edit/delete
+  - To add to config:
+    - Posts dir option
+    - Allowed filename extensions for posts
+    - View directory
+    - View filename extension
  */
 
+// Dependencies
 var _ = require('lodash');
 var route = require('koa-route');
 var logger = require('koa-logger');
+var gaze = require('gaze');
 var koa = require('koa');
 var port = process.argv[2] || 3000;
 var app = koa();
 
+// Custom dependencies
 var render = require('./lib/renderer');
 var parsePosts = require('./lib/parse-all-posts');
-var gaze = require('gaze');
 
 // Middleware
 app.use(logger());
@@ -26,10 +31,12 @@ app.use(route.get('/:url', show));
 var postsArr = [];
 var postsMap = {};
 
+// All-view locals
 var locals = {
   moment: require('moment')
 };
 
+// Server methods
 function * list() {
   this.body = yield render('list', _.extend(locals, {
     posts: postsArr
@@ -44,51 +51,51 @@ function * show(url) {
   }));
 }
 
+// Now init the server
+(function init() {
+  parsePosts('./posts')
+    .then(function(posts) {
+      postsArr = posts;
 
-parsePosts('./posts')
-  .then(function(posts) {
-    postsArr = posts;
+      postsArr.forEach(function(post, i) {
+        postsMap[post.url] = i;
+      });
 
-    postsArr.forEach(function(post, i) {
-      postsMap[post.url] = i;
+      app.listen(port);
+      console.log('Listening on port', port);
+
+    }, function(err) {
+      console.log(err);
     });
 
-    console.log(postsMap);
+  // Watch all .js files/dirs in process.cwd()
+  // gaze(['./posts/*.md', './posts/'], function(err, watcher) {
+  //   // Files have all started watching
+  //   // watcher === this
 
-    app.listen(port);
-    console.log('Listening on port', port);
+  //   // Get all watched files
+  //   this.watched(function(err, watched) {
+  //     console.log("watching", watched);
+  //   });
 
-  }, function(err) {
-    console.log(err);
-  });
+  //   // On file changed
+  //   this.on('changed', function(filepath) {
+  //     console.log(filepath + ' was changed');
+  //   });
 
-// Watch all .js files/dirs in process.cwd()
-gaze(['./posts/*.md', './posts/µ'], function(err, watcher) {
-  // Files have all started watching
-  // watcher === this
+  //   // On file added
+  //   this.on('added', function(filepath) {
+  //     console.log(filepath + ' was added');
+  //   });
 
-  // Get all watched files
-  this.watched(function(err, watched) {
-    console.log("watching", watched);
-  });
+  //   // On file deleted
+  //   this.on('deleted', function(filepath) {
+  //     console.log(filepath + ' was deleted');
+  //   });
 
-  // On file changed
-  this.on('changed', function(filepath) {
-    console.log(filepath + ' was changed');
-  });
-
-  // On file added
-  this.on('added', function(filepath) {
-    console.log(filepath + ' was added');
-  });
-
-  // On file deleted
-  this.on('deleted', function(filepath) {
-    console.log(filepath + ' was deleted');
-  });
-
-  // On changed/added/deleted
-  this.on('all', function(event, filepath) {
-    console.log(filepath + ' was ' + event);
-  });
-});
+  //   // On changed/added/deleted
+  //   this.on('all', function(event, filepath) {
+  //     console.log(filepath + ' was ' + event);
+  //   });
+  // });
+})();
