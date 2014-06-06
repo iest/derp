@@ -1,11 +1,6 @@
 /*
   TODO:
   - Watcher for posts dir, add/edit/delete
-  - To add to config:
-    - Posts dir option
-    - Allowed filename extensions for posts
-    - View directory
-    - View filename extension
  */
 
 // Dependencies
@@ -14,19 +9,31 @@ var route = require('koa-route');
 var logger = require('koa-logger');
 var gaze = require('gaze');
 var koa = require('koa');
-var port = process.argv[2] || 3000;
 var app = koa();
 
-// Custom dependencies
+var port = process.argv[2] || 3000;
+var config = require('./config');
+
+// derp's dependencies
 var render = require('./lib/renderer');
 var parsePosts = require('./lib/parse-all-posts');
 
 // Middleware
 app.use(logger());
 
+// API
+app.use(route.get('/api', handle));
+app.use(route.post('/api', handle));
+app.use(route.put('/api', handle));
+app.use(route.delete('/api', handle));
+
 // Routes
 app.use(route.get('/', list));
 app.use(route.get('/:url', show));
+
+function * handle() {
+  this.body = this.method;
+}
 
 var postsArr = [];
 var postsMap = {};
@@ -53,7 +60,7 @@ function * show(url) {
 
 // Now init the server
 (function init() {
-  parsePosts('./posts')
+  parsePosts(config.post_directory)
     .then(function(posts) {
       postsArr = posts;
 

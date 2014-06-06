@@ -3,5 +3,5 @@ html
   body
       a(href='/') Home
       h1= post.title
-      h2= moment(post.date).fromNow()
+      time(datetime=post.date.toString())= moment(post.date).fromNow()
       != post.content
