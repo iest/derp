@@ -1,3 +1,11 @@
+/**
+ * index.js
+ *
+ * All the main stuff happens in here.
+ * We set our app up, define methods for handling our routes, set template
+ * locals and pull in all our posts.
+ */
+
 /*
   TODO:
   - Watcher for posts dir, add/edit/delete
@@ -11,31 +19,31 @@ var gaze = require('gaze');
 var koa = require('koa');
 var app = koa();
 
-var port = process.argv[2] || 3000;
-var config = require('./config');
-
-// derp's dependencies
+// Custom dependencies
 var render = require('./lib/renderer');
 var parsePosts = require('./lib/parse-all-posts');
+
+// Global variables
+var port = process.argv[2] || 3000;
+var config = require('./config');
 
 // Middleware
 app.use(logger());
 
 // API
-app.use(route.get('/api', handle));
-app.use(route.post('/api', handle));
-app.use(route.put('/api', handle));
-app.use(route.delete('/api', handle));
+// app.use(route.get('/api', handle));
+// app.use(route.post('/api', handle));
+// app.use(route.put('/api', handle));
+// app.use(route.delete('/api', handle));
 
 // Routes
 app.use(route.get('/', list));
 app.use(route.get('/:url', show));
 
-function * handle() {
-  this.body = this.method;
-}
-
+// An array where we'll store our posts
 var postsArr = [];
+
+// and a map of `post_url: postsArr_index` so we can do quick lookups
 var postsMap = {};
 
 // All-view locals
@@ -53,12 +61,14 @@ function * list() {
 function * show(url) {
   var post = postsArr[postsMap[url]];
   if (!post) this.throw(404, 'Post not found');
+
   this.body = yield render('post', _.extend(locals, {
-    post: post
+    post: post,
+    path: this.response.path
   }));
 }
 
-// Now init the server
+// Now run the server
 (function init() {
   parsePosts(config.post_directory)
     .then(function(posts) {
