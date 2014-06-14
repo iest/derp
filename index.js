@@ -4,6 +4,10 @@
  * All the main stuff happens in here.
  * We set our app up, define methods for handling our routes, set template
  * locals and pull in all our posts.
+ *
+ * A quick note on middleware: The order of middleware is important. If any
+ * *later* middleware `return`s, the stack unwinds, meaning *earlier* generators
+ * are re-activated — hence why the `pageNotFound` middleware is near the top.
  */
 
 /*
@@ -15,20 +19,30 @@
 var _ = require('lodash');
 var route = require('koa-route');
 var logger = require('koa-logger');
-var gaze = require('gaze');
 var koa = require('koa');
+var views = require('co-views');
+var gaze = require('gaze');
 var app = koa();
 
-// Custom dependencies
-var render = require('./lib/renderer');
-var parsePosts = require('./lib/parse-all-posts');
+var derp = require('./lib/derp');
 
 // Global variables
 var port = process.argv[2] || 3000;
 var config = require('./config');
+var render = views(config.view_directory, {
+  default: config.template_extension
+});
+
+derp(app);
 
 // Middleware
 app.use(logger());
+app.use(pageNotFound);
+app.use(locals);
+
+// Routes
+app.use(route.get('/', list));
+app.use(route.get('/:url', show));
 
 // API
 // app.use(route.get('/api', handle));
@@ -36,83 +50,45 @@ app.use(logger());
 // app.use(route.put('/api', handle));
 // app.use(route.delete('/api', handle));
 
-// Routes
-app.use(route.get('/', list));
-app.use(route.get('/:url', show));
-
 // An array where we'll store our posts
-var postsArr = [];
+var postsArr = app.postsArr = [];
 
-// and a map of `post_url: postsArr_index` so we can do quick lookups
-var postsMap = {};
-
-// All-view locals
-var locals = {
-  moment: require('moment')
-};
+// and a map of `post_url: {position: postsArr_index, filename: filename}` so we can do quick lookups and stuff
+var postsMap = app.postsMap = {};
 
 // Server methods
 function * list() {
-  this.body = yield render('list', _.extend(locals, {
-    posts: postsArr
+  this.body = yield render('list', _.extend(this.locals, {
+    posts: app.postsArr
   }));
 }
 
 function * show(url) {
-  var post = postsArr[postsMap[url]];
-  if (!post) this.throw(404, 'Post not found');
+  var post = app.postsArr[postsMap[url]];
+  if (!post) return;
 
-  this.body = yield render('post', _.extend(locals, {
-    post: post,
-    path: this.response.path
+  this.body = yield render('post', _.extend(this.locals, {
+    post: post
   }));
 }
 
-// Now run the server
-(function init() {
-  parsePosts(config.post_directory)
-    .then(function(posts) {
-      postsArr = posts;
+function * pageNotFound(next) {
+  yield next;
+  if (this.body) return;
+  this.status = 404;
+  this.body = yield render('404');
+}
 
-      postsArr.forEach(function(post, i) {
-        postsMap[post.url] = i;
-      });
+function * locals(next) {
+  this.locals = {
+    moment: require('moment'),
+    path: this.request.path
+  };
+  yield next;
+}
 
-      app.listen(port);
-      console.log('Listening on port', port);
 
-    }, function(err) {
-      console.log(err);
-    });
 
-  // Watch all .js files/dirs in process.cwd()
-  // gaze(['./posts/*.md', './posts/'], function(err, watcher) {
-  //   // Files have all started watching
-  //   // watcher === this
-
-  //   // Get all watched files
-  //   this.watched(function(err, watched) {
-  //     console.log("watching", watched);
-  //   });
-
-  //   // On file changed
-  //   this.on('changed', function(filepath) {
-  //     console.log(filepath + ' was changed');
-  //   });
-
-  //   // On file added
-  //   this.on('added', function(filepath) {
-  //     console.log(filepath + ' was added');
-  //   });
-
-  //   // On file deleted
-  //   this.on('deleted', function(filepath) {
-  //     console.log(filepath + ' was deleted');
-  //   });
-
-  //   // On changed/added/deleted
-  //   this.on('all', function(event, filepath) {
-  //     console.log(filepath + ' was ' + event);
-  //   });
-  // });
-})();
+// Now do the work and run the server
+app.listen(port);
+console.log('Listening on port', port);

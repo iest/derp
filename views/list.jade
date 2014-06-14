@@ -1,7 +1,10 @@
 doctype html
 html
   body
-    h1 My awesome blog
+    nav
+      a(href="/", class=path=="/"?"active":"") Home
+      a(href="/test", class=path=="/"?"":"active") Test
+    h1 My awesome blog:
     ul
       if posts.length
         each post in posts

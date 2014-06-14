@@ -1,3 +1,6 @@
+url: READMEEEE
+date: 14 June 2014
+
 herp-derp
 =========
 
@@ -36,7 +39,6 @@ post: {
 
 So you have everything you need when you render your blogpost. (See `views` for examples of how to use).
 
-A post *requires* a **h1 tag** and a `url` meta
 The only required meta in your post is `url`: posts without one are ignored (*so you could use this as a simple drafting system*). Otherwise, `date` has to be a JS-parsable date: "5-6-2014", "5/6/2014", "5 June 2014" are all good.
 
 #### Extensible

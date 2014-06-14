@@ -6,4 +6,4 @@ tags: web, something, tag-test, another tag
 
 # new post
 
-This is the first post on my fake blog
+This is the first post on my fake blog.
