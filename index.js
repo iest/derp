@@ -1,18 +1,6 @@
 /**
  * index.js
- *
- * All the main stuff happens in here.
- * We set our app up, define methods for handling our routes, set template
- * locals and pull in all our posts.
- *
- * A quick note on middleware: The order of middleware is important. If any
- * *later* middleware `return`s, the stack unwinds, meaning *earlier* generators
- * are re-activated — hence why the `pageNotFound` middleware is near the top.
- */
-
-/*
-  TODO:
-  - Watcher for posts dir, add/edit/delete
+ * 
  */
 
 // Dependencies
@@ -23,7 +11,6 @@ var koa = require('koa');
 var views = require('co-views');
 var gaze = require('gaze');
 var app = koa();
-
 var derp = require('./lib/derp');
 
 // Global variables
@@ -44,18 +31,6 @@ app.use(locals);
 app.use(route.get('/', list));
 app.use(route.get('/:url', show));
 
-// API
-// app.use(route.get('/api', handle));
-// app.use(route.post('/api', handle));
-// app.use(route.put('/api', handle));
-// app.use(route.delete('/api', handle));
-
-// An array where we'll store our posts
-var postsArr = app.postsArr = [];
-
-// and a map of `post_url: {position: postsArr_index, filename: filename}` so we can do quick lookups and stuff
-var postsMap = app.postsMap = {};
-
 // Server methods
 function * list() {
   this.body = yield render('list', _.extend(this.locals, {
@@ -64,7 +39,7 @@ function * list() {
 }
 
 function * show(url) {
-  var post = app.postsArr[postsMap[url]];
+  var post = app.postsArr[app.postsMap[url]];
   if (!post) return;
 
   this.body = yield render('post', _.extend(this.locals, {
