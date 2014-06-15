@@ -3,7 +3,7 @@
   "description": "simple blog engine built with koa (ES6)",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "lib/derp",
   "repository": {
     "type": "git",
     "url": "http://github.com/iest/derp"
