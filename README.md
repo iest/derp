@@ -56,7 +56,7 @@ I needed a blog engine for [my site](http://iestynwilliams.net), and wanted an e
 
 ### Basic setup
 
-See the examples for use with a [koa]('./examples/koa.js') or [express](./examples/express.js') server.
+See the examples for use with a [koa](https://github.com/iest/derp/blob/master/examples/koa.js) or [express](https://github.com/iest/derp/blob/master/examples/express.js) server.
 
 1. Install [Node](http://nodejs.com)
 2. `npm install derpjs`
@@ -88,7 +88,7 @@ app.listen(3000);
 ## Public API
 
 #### `derp.setup(application, [options])`
-Parses all the posts, and sets up a watcher on the posts directory to keep track of file changes. Optionally pass in an options hash (checkout the [defaults](./lib/derp/defaults.js)).
+Parses all the posts, and sets up a watcher on the posts directory to keep track of file changes. Optionally pass in an options hash (checkout the [defaults](https://github.com/iest/derp/blob/master/lib/derp/defaults.js)).
 
 #### `derp.getPost(path)`
 Returns a post that matches the given path.
