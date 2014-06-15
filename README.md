@@ -1,9 +1,9 @@
-# Derp
+# Derpjs
 
 *A simple, file-based blog engine.*
 
 #### What?
-Derp is bascially a glorified markdown parser, and it wants posts in a certain way — given the following `first-post.md`:
+Derp is bascially a glorified markdown parser, and it wants posts in a certain way. Given the following `first-post.md`:
 
 ```markdown
 url: my-first-post
@@ -43,73 +43,63 @@ date: 15 June 2014
 ```
 
 Derp treats certain meta keys in certain ways:
-- the `url` meta becomes the url slug for the post, and is the only meta which is **required**
+- the `url` meta becomes the url slug for the post, and is the only meta which is **required**. (Posts without URLs are ignored — think of it as a primitive draft system)
 - a `tags` key with a comma-delimmited list will become an array of tags
-- a `date` key will be parsed as a javascript date
+- a `date` will be parsed as a javascript date
+
+Other than those, add whatever meta you want!
+
+Also, it'll watch for changes in the `post` directory, making sure to keep everything updates for you.
 
 #### Why?
 I needed a blog engine for [my site](http://iestynwilliams.net), and wanted an excuse to play around with ES6 generators, node streams, and regex. I drew some heavy inspiration from [@jsantell](http://twitter.com/jsantell)'s [poet](http://jsantell.github.io/poet/).
 
 ### Basic setup
 
+See the examples for use with a [koa]('./examples/koa.js') or [express](./examples/express.js') server.
+
 1. Install [Node](http://nodejs.com)
-2. 
+2. `npm install derpjs`
+3. ???
+4. PROFIT
 
-
-
-
-
-
-<!--
-herp-derp
-=========
-
-*A simple, extensible, node-powered blog engine*
-
-Heavily inspired by [@jsantell](http://twitter.com/jsantell)'s [poet](http://jsantell.github.io/poet/), and with some ideas from [ghost](https://ghost.org) (and wanting to play around with node streams and ES6 generators), I decided to write my own blog engine to run my new website on.
-
-#### Simple
-It uses [koa](http://koajs.com) under the hood, which makes heavy use of ES6 generators to make code more expressive and cleaner.
-There are sensible defaults set in `config.js` so you can get up and running fast.
-
-#### Intuitive
-Herp-derp assumes that you have some simple meta data at the top of your blog posts — given the following `awesome-post.md`:
-
-```markdown
-url: my-awesome-post
-date: 5/6/14
-tags: awesome-post, web dev, herp-derp
-
-# My Awesomeee posteee
-
-Herpin' the derp...
-```
-
-The post object that gets given to your templates will look like:
-
+Here's a basic (and contrived) example:
 ```javascript
-post: {
-  title: "My Awesomeee posteee",
-  url: "my-awesome-post",
-  date: {"Tue May 06 2014 00:00:00 GMT+0100 (BST)"},
-  tags: ["awesome-post", "web dev", "herp-derp"],
-  content: "<p>...Herpin' the derp</p>"
-}
+var express = require('express');
+var app = express();
+var derp = require('derpjs');
+
+derp.setup(app);
+
+app.get('/', function(req, res) {
+  res.send(derp.getAllPosts()); // What, you don't like JSON?
+});
+
+app.get('/:url', function(req, res, next) {
+  var post = derp.getPost(req.params.url);
+  if (!post) res.send(404);
+  res.send(post);
+});
+
+app.listen(3000);
 ```
 
-So you have everything you need when you render your blogpost. (See `views` for examples of how to use).
 
-A post *requires* a **h1 tag** and a `url` meta
-The only required meta in your post is `url`: posts without one are ignored (*so you could use this as a simple drafting system*). Otherwise, `date` has to be a JS-parsable date: "5-6-2014", "5/6/2014", "5 June 2014" are all good.
+## Public API
 
-#### Extensible
+#### `derp.setup(application, [options])`
+Parses all the posts, and sets up a watcher on the posts directory to keep track of file changes. Optionally pass in an options hash (checkout the [defaults](./lib/derp/defaults.js)).
 
-Don't like jade as your template engine? Herp-derp uses [co-views](https://github.com/visionmedia/co-views) under the hood, so as long as you set your engine in `config.js` (and make sure you have your template engine `npm install`ed), you're good to go!
+#### `derp.getPost(path)`
+Returns a post that matches the given path.
+
+#### `derp.getAllPosts()`
+Returns an array containing all the posts.
+
 
 ## Thanks to...
-- [@jsantell](http://twitter.com/jsantell)'s [poet](http://jsantell.github.io/poet/)
-- Node-schools' stream-adventure tutorial helped me learn about node's streaming interface.
-- [Forbes Lindsey's generator talk]
-- [tagtree tv's ES6 videos]
-
--->
+- [@jsantell](http://twitter.com/jsantell) for inspiration
+- [Node-schools' stream-adventure](http://nodeschool.io/#stream-adventure) tutorial
+- Forbes Lindsey's [excellent talk on generators](https://www.youtube.com/watch?v=qbKWsbJ76-s)
+- [tagtree.tv's ES6 videos](http://tagtree.tv)
+- [@tjholowaychuk](https://twitter.com/tjholowaychuk) for making awesome tools that I use every day

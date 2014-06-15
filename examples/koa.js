@@ -1,5 +1,5 @@
 /**
- * To run this example you need node version 0.11.9 or higher.
+ * To run this example you need node version 0.11.9 or higher, then:
  * $ node --harmony koa.js
  */
 
