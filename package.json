@@ -1,26 +1,27 @@
 {
-  "name": "nBlog",
+  "name": "derp",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
+  "repository": {
+      "type": "git",
+      "url": "http://github.com/iest/derp"
+    },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Iestyn Williams",
   "license": "ISC",
   "dependencies": {
     "koa": "^0.6.2",
     "koa-route": "^1.1.4",
     "co-views": "^0.2.0",
     "jade": "^1.3.1",
-    "co-body": "0.0.1",
     "koa-logger": "^1.2.1",
     "split": "^0.3.0",
     "moment": "^2.6.0",
     "marked": "^0.3.2",
     "lodash": "^2.4.1",
-    "rsvp": "^3.0.8",
-    "gaze": "^0.6.4",
-    "through": "^2.3.4"
+    "rsvp": "^3.0.8"
   }
 }
