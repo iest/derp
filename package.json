@@ -1,8 +1,7 @@
 {
-  "name": "derp",
-  "description": "simple blog engine built with koa (ES6)",
-  "version": "0.0.1",
+  "name": "derpjs",
   "description": "",
+  "version": "0.0.1",
   "main": "lib/derp",
   "repository": {
     "type": "git",
@@ -12,16 +11,17 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "koa": "^0.6.2",
-    "koa-route": "^1.1.4",
     "co-views": "^0.2.0",
+    "express": "^4.4.3",
     "jade": "^1.3.1",
+    "koa": "^0.6.2",
     "koa-logger": "^1.2.1",
-    "split": "^0.3.0",
-    "moment": "^2.6.0",
-    "marked": "^0.3.2",
+    "koa-route": "^1.1.4",
     "lodash": "^2.4.1",
-    "rsvp": "^3.0.8"
+    "marked": "^0.3.2",
+    "moment": "^2.6.0",
+    "rsvp": "^3.0.8",
+    "split": "^0.3.0"
   },
   "keywords": [
     "blog",
@@ -35,5 +35,7 @@
     "url": "http://iestynwilliams.net"
   },
   "license": "ISC",
-  "engines": ["node >= 0.11.9"]
+  "engines": [
+    "node >= 0.11.9"
+  ]
 }

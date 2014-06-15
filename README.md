@@ -1,3 +1,66 @@
+# Derp
+
+*A simple, file-based blog engine.*
+
+#### What?
+Derp is bascially a glorified markdown parser, and it wants posts in a certain way — given the following `first-post.md`:
+
+```markdown
+url: my-first-post
+
+# My First Post
+
+...herpin' the derp...
+```
+Derp will give you an object that looks like this:
+```javascript
+{
+  title: "My First Post",
+  url: "my-first-post",
+  content: "<p>...herpin' the derp...</p>"
+}
+```
+
+Derp takes the first *heading 1* it finds and sets it to be the post's title. Anything before that heading is treated as a *meta* section. Simply add the `key:values` you want, and they'll come out in the `post` object:
+
+```markdown
+url: a-new-post
+tags: derp, markdown, another tag
+date: 15 June 2014
+
+# A new post
+
+...
+```
+```javascript
+{
+  title: "A new post",
+  url: "a-new-post",
+  tags: ['derp', 'markdown', 'another tag'],
+  date: "Sun Jun 15 2014 21:05:39 GMT+0100 (BST)",
+  content: "<p>...</p>"
+}
+```
+
+Derp treats certain meta keys in certain ways:
+- the `url` meta becomes the url slug for the post, and is the only meta which is **required**
+- a `tags` key with a comma-delimmited list will become an array of tags
+- a `date` key will be parsed as a javascript date
+
+#### Why?
+I needed a blog engine for [my site](http://iestynwilliams.net), and wanted an excuse to play around with ES6 generators, node streams, and regex. I drew some heavy inspiration from [@jsantell](http://twitter.com/jsantell)'s [poet](http://jsantell.github.io/poet/).
+
+### Basic setup
+
+1. Install [Node](http://nodejs.com)
+2. 
+
+
+
+
+
+
+<!--
 herp-derp
 =========
 
@@ -48,3 +111,5 @@ Don't like jade as your template engine? Herp-derp uses [co-views](https://githu
 - Node-schools' stream-adventure tutorial helped me learn about node's streaming interface.
 - [Forbes Lindsey's generator talk]
 - [tagtree tv's ES6 videos]
+
+-->

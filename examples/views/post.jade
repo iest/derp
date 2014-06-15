@@ -3,7 +3,6 @@ html
   body
     nav
       a(href="/", class=path=="/"?"active":"") Home
-      a(href="/test", class=path=="/"?"":"active") Test
-    h1= post.title
-    time(datetime=post.date.toString())= moment(post.date).fromNow()
+    h1 My awesome blog
+    h2= post.title
     != post.content
