@@ -20,7 +20,7 @@ var render = views(config.view_directory, {
   default: config.template_extension
 });
 
-derp(app);
+derp.setup(app);
 
 // Middleware
 app.use(logger());
