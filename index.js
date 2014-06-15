@@ -10,7 +10,9 @@ var port = process.argv[2] || 3000;
 app.use(logger());
 
 // Setup derp
-derp.setup(app);
+derp.setup(app, {
+  post_extensions: ["txt"]
+});
 
 // Now do the work and run the server
 app.listen(port);

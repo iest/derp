@@ -1,17 +1,16 @@
 {
   "name": "derp",
+  "description": "simple blog engine built with koa (ES6)",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "repository": {
-      "type": "git",
-      "url": "http://github.com/iest/derp"
-    },
+    "type": "git",
+    "url": "http://github.com/iest/derp"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Iestyn Williams",
-  "license": "ISC",
   "dependencies": {
     "koa": "^0.6.2",
     "koa-route": "^1.1.4",
@@ -23,5 +22,18 @@
     "marked": "^0.3.2",
     "lodash": "^2.4.1",
     "rsvp": "^3.0.8"
-  }
+  },
+  "keywords": [
+    "blog",
+    "blogging",
+    "writing",
+    "markdown",
+    "herp"
+  ],
+  "author": {
+    "name": "Iestyn Williams",
+    "url": "http://iestynwilliams.net"
+  },
+  "license": "ISC",
+  "engines": ["node >= 0.11.9"]
 }
