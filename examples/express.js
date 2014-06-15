@@ -28,13 +28,13 @@ derp.setup(app);
 
 app.get('/', function(req, res) {
   res.render('list', {
-    posts: app.postsArr,
+    posts: derp.getAllPosts(),
     path: req.path
   });
 });
 
 app.get('/:url', function(req, res, next) {
-  var post = app.postsArr[app.postsMap[req.params.url]];
+  var post = derp.getPost(req.params.url);
   if (!post) next();
   res.render('post', {
     post: post,

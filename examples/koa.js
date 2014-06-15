@@ -44,12 +44,12 @@ app.use(function * locals(next) {
 // Routes
 app.use(route.get('/', function * list() {
   this.body = yield render('list', _.extend(this.locals, {
-    posts: app.postsArr
+    posts: derp.getAllPosts()
   }));
 }));
 
 app.use(route.get('/:url', function * show(url) {
-  var post = app.postsArr[app.postsMap[url]];
+  var post = derp.getPost(url);
   if (!post) return;
   this.body = yield render('post', _.extend(this.locals, {
     post: post
