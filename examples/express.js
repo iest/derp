@@ -24,7 +24,7 @@ app.use(function(req, res, next){
   next();
 });
 
-derp.setup(app);
+derp.setup();
 
 app.get('/', function(req, res) {
   res.render('list', {
@@ -35,7 +35,7 @@ app.get('/', function(req, res) {
 
 app.get('/:url', function(req, res, next) {
   var post = derp.getPost(req.params.url);
-  if (!post) next();
+  if (!post) return next();
   res.render('post', {
     post: post,
     path: req.path
