@@ -56,12 +56,8 @@ I needed a blog engine for [my site](http://iestynwilliams.net), and wanted an e
 
 ### Basic setup
 
-See the examples for use with a [koa](https://github.com/iest/derp/blob/master/examples/koa.js) or [express](https://github.com/iest/derp/blob/master/examples/express.js) server.
-
 1. Install [Node](http://nodejs.com)
 2. `npm install derpjs`
-3. ???
-4. PROFIT
 
 Here's a basic (and contrived) example:
 ```javascript
@@ -69,7 +65,7 @@ var express = require('express');
 var app = express();
 var derp = require('derpjs');
 
-derp.setup(app);
+derp.setup();
 
 app.get('/', function(req, res) {
   res.send(derp.getAllPosts()); // What, you don't like JSON?
@@ -84,14 +80,16 @@ app.get('/:url', function(req, res, next) {
 app.listen(3000);
 ```
 
+For more real-wordl examples, see the [koa](https://github.com/iest/derp/blob/master/examples/koa.js) and [express](https://github.com/iest/derp/blob/master/examples/express.js) examples.
 
-## Public API
 
-#### `derp.setup(application, [options])`
+## API
+
+#### `derp.setup([options])`
 Parses all the posts, and sets up a watcher on the posts directory to keep track of file changes. Optionally pass in an options hash (checkout the [defaults](https://github.com/iest/derp/blob/master/lib/derp/defaults.js)).
 
 #### `derp.getPost(path)`
-Returns a post that matches the given path.
+Returns a post that matches the given path (where the path is a relative url defined on a post).
 
 #### `derp.getAllPosts()`
 Returns an array containing all the posts.
