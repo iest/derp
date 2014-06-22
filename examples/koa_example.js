@@ -18,10 +18,10 @@ var port = process.argv[2] || 3000;
 app.use(logger());
 
 // Setup derp
-derp.setup(app);
-var config = app.config;
+derp.setup();
+var config = derp.config;
 
-var render = views(config.view_directory, {
+var render = views(__dirname + '/views', {
   default: config.template_extension
 });
 
