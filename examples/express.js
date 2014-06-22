@@ -24,7 +24,9 @@ app.use(function(req, res, next){
   next();
 });
 
-derp.setup();
+derp.setup().then(function() {
+  console.log('Fintio!');
+});
 
 app.get('/', function(req, res) {
   res.render('list', {
