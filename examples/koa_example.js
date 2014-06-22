@@ -18,7 +18,9 @@ var port = process.argv[2] || 3000;
 app.use(logger());
 
 // Setup derp
-derp.setup();
+derp.setup({
+  post_directory: "../test/fixtures"
+});
 var config = derp.config;
 
 var render = views(__dirname + '/views', {

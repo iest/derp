@@ -43,8 +43,9 @@ describe('getAllPosts', function() {
     });
   });
 
-  it('should return an array of posts', function(done) {
-    derp.getAllPosts().should.have.lengthOf(2);
+  it('should by default return an array of posts', function(done) {
+    console.log(derp.getAllPosts());
+    derp.getAllPosts().length.should.be.ok;
     done();
   });
 });

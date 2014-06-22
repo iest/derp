@@ -1,6 +1,6 @@
 # Derpjs
 
-*A simple, file-based blog engine.*
+*A simple, bare-bones, file-based blog engine.*
 
 #### What?
 Derp is bascially a glorified markdown parser, and it wants posts in a certain way. Given the following `first-post.md`:
@@ -91,8 +91,8 @@ Parses all the posts, and sets up a watcher on the posts directory to keep track
 #### `derp.getPost(path)`
 Returns a post that matches the given path (where the path is a relative url defined on a post).
 
-#### `derp.getAllPosts()`
-Returns an array containing all the posts.
+#### `derp.getAllPosts([sortFn])`
+Returns an array containing all the posts. The array is not sorted, so this is up to you.
 
 
 ## Thanks to...

@@ -24,15 +24,22 @@ app.use(function(req, res, next){
   next();
 });
 
-derp.setup().then(function() {
-  console.log('Fintio!');
+derp.setup({
+  post_directory: "../test/fixtures"
 });
+
+function sortByTitle(a,b) {
+  if (a.title > b.title) return 1;
+  if (a.title < b.title) return -1;
+  return 0;
+}
 
 app.get('/', function(req, res) {
   res.render('list', {
-    posts: derp.getAllPosts(),
+    posts: derp.getAllPosts().sort(sortByTitle),
     path: req.path
   });
+  console.log(derp);
 });
 
 app.get('/:url', function(req, res, next) {
