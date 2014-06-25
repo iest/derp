@@ -27,6 +27,12 @@ var dummyPost_modifiedContent = {
   path: "dummy path",
   content: "different dummy content"
 };
+var differentPost = {
+  title: "different dummy title",
+  url: "different dummy url",
+  path: "different dummy path",
+  content: "different dummy content"
+};
 
 describe('private API function', function() {
 
@@ -85,6 +91,27 @@ describe('private API function', function() {
       derp.postsArr[0].should.equal(dummyPost_modifiedContent);
       done();
     });
+  });
+
+  describe('removePost', function() {
+    
+    beforeEach(function() {
+      derp.postsArr = [];
+      derp.postsMap = {};
+      derp.postsMapByPath = {};
+      
+      derp.addPost(differentPost);
+      derp.addPost(dummyPost);
+    });
+
+    it('should delete the post at the given path', function(done) {
+      derp.removePost(differentPost.path);
+      derp.postsArr[0].should.equal(dummyPost);
+      derp.postsMap[dummyPost.url].should.equal(0);
+      derp.postsMapByPath[dummyPost.path].should.equal(dummyPost.url);
+      done();
+    });
+
   });
 
 });
