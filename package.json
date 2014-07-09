@@ -1,14 +1,14 @@
 {
   "name": "derpjs",
   "description": "",
-  "version": "0.1.2",
+  "version": "0.2.1",
   "main": "lib/derp",
   "repository": {
     "type": "git",
     "url": "http://github.com/iest/derp"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "dependencies": {
     "co-views": "^0.2.0",
@@ -35,9 +35,6 @@
     "url": "http://iestynwilliams.net"
   },
   "license": "ISC",
-  "engines": [
-    "node >= 0.11.9"
-  ],
   "devDependencies": {
     "mocha": "^1.20.1",
     "should": "^4.0.4"
