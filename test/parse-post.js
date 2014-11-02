@@ -19,14 +19,14 @@ describe("parse post", function() {
 
   it("creates a post with a title if no title meta is set", function(done) {
     parse("test/fixtures/Derp.md").then(function(post) {
-      post.title.should.be.exactly("Derpy derp");
+      post.title.should.be.exactly("Title set in content");
       done();
     });
   });
 
   it("creates a post with a meta title", function(done) {
-    parse("test/fixtures/Derp.md").then(function(post) {
-      post.title.should.be.exactly("Derpy derp");
+    parse("test/fixtures/Derp_meta_title.md").then(function(post) {
+      post.title.should.be.exactly("Title set in meta");
       done();
     });
   });
@@ -45,10 +45,16 @@ describe("parse post", function() {
     });
   });
 
-  it("creates a post with parsed markdown", function(done) {
+  it("creates a post with parsed markdown, including the first h1 if title is set as a meta key", function(done) {
+    parse("test/fixtures/Derp_meta_title.md").then(function(post) {
+      post.content.should.be.exactly('<h1 id="title-should-be-set-in-meta">Title should be set in meta</h1>\n<p>This is some derpy content</p>\n');
+      done();
+    });
+  });
+
+  it("creates a post with parsed markdown, excluding the title if no meta title key is present", function(done) {
     parse("test/fixtures/Derp.md").then(function(post) {
-      console.log(post);
-      post.content.should.be.exactly("<h1>Derpy derp</h1><p>This is some derpy content</p>");
+      post.content.should.be.exactly("<p>This is some derpy content</p>\n");
       done();
     });
   });

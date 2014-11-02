@@ -1,6 +1,6 @@
 URL: derp
 Title: Title set in meta
 
-# Title set in content
+# Title should be set in meta
 
 This is some derpy content
